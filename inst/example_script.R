@@ -1,94 +1,80 @@
-# ----------------------------------------------------------------------
-# 1. Setup and Data Generation
-# ----------------------------------------------------------------------
-
 library(OmicNetR)
-library(dplyr)
 library(ggplot2)
 
 # Set seed for reproducibility
 set.seed(123)
 
+# 1. Setup and Data Generation
 message("Step 1: Generating dummy omics data...")
 omics_data <- generate_dummy_omics(
   n_samples = 60, 
   n_genes = 800, 
   n_metabolites = 150, 
-  n_linked = 20  # Increased linked features for better visualization
+  n_linked = 20  
 )
 
+# Crucial: Keep the original matrices for the heatmap later
 X <- omics_data$X 
 Y <- omics_data$Y 
 
-# ----------------------------------------------------------------------
-# 2. Sparse CCA Model Fitting (Relaxed Penalties)
-# ----------------------------------------------------------------------
-
+# 2. Sparse CCA Model Fitting
 message("Step 2: Fitting sCCA model...")
+scca_model <- omic_scca(X = X, Y = Y, n_components = 2, penalty_X = 0.70, penalty_Y = 0.70)
 
-# We lowered penalties from 0.95 to 0.70. 
-# This ensures the model "picks" enough features to form a network.
-scca_model <- omic_scca(
-  X = X, 
-  Y = Y, 
-  n_components = 2,  
-  penalty_X = 0.70,  
-  penalty_Y = 0.70   
-)
-
-cat("\nCanonical Correlations (Explained Variance):\n")
-print(scca_model$canonical_correlations)
-
-# ----------------------------------------------------------------------
 # 3. Network Generation (The "Handshake")
-# ----------------------------------------------------------------------
-
 message("Step 3: Generating network edge list...")
+net_data_comp1 <- scca_to_network(scca_model, comp_select = 1, weight_threshold = 0.01)
 
-# We lowered the threshold to 0.01 to ensure we see the initial connections.
-net_data_comp1 <- scca_to_network(
-  scca_model, 
-  comp_select = 1,      
-  weight_threshold = 0.01 
-)
-
-# If the network is still empty, stop and warn
-if(nrow(net_data_comp1) == 0) {
-  stop("Network is empty. Try lowering the penalty_X/Y even further.")
+# Keep top 50 strongest edges for a clean plot using Base R
+if(nrow(net_data_comp1) > 50) {
+  net_data_comp1 <- net_data_comp1[order(abs(net_data_comp1$Weight_Product), decreasing = TRUE), ]
+  net_data_comp1 <- net_data_comp1[1:50, ]
 }
 
-# OPTIONAL: Keep only the Top 50 strongest edges for a very clean plot
-net_data_comp1 <- net_data_comp1 %>%
-  arrange(desc(abs(Weight_Product))) %>%
-  head(50)
-
-cat("\nPlotting the top", nrow(net_data_comp1), "strongest interactions.\n")
-
 # ----------------------------------------------------------------------
-# 4. Visualization
+# 4. Saving and Rendering Visuals to man/figures
 # ----------------------------------------------------------------------
+message("Step 4: Saving plots to man/figures...")
 
-message("Step 4: Rendering plots...")
+# Create the directory if it doesn't exist (root of your package)
+if (!dir.exists("man/figures")) {
+  dir.create("man/figures", recursive = TRUE)
+}
 
 # A. Bipartite Network Plot
-bipartite_plot <- plot_bipartite_network(
+# We use png() because this function uses Base R/igraph plotting
+png("man/figures/network_plot.png", width = 1000, height = 1000, res = 150)
+plot_bipartite_network(
   net_data_comp1,
   gene_color = "#1F77B4", 
   metabolite_color = "#FF7F0E",
   layout_type = "fr"
 )
-
-# Display the network
-print(bipartite_plot)
+dev.off()
 
 # B. Feature Importance Circle Plot
+# This returns a ggplot2 object, so we use ggsave
 pathway_circle_plot <- plot_pathway_circle(
   scca_model,
-  top_features = 25, 
+  top_features = 30, 
   pathway_db = "KEGG"
 )
+ggplot2::ggsave("man/figures/circle_plot.png", plot = pathway_circle_plot, width = 7, height = 7, dpi = 300)
 
-# Display the circle plot
-print(pathway_circle_plot)
+# C. Global Correlation Heatmap
+# This uses the original matrices (X and Y) to calculate correlations 
+# for the features selected by the sCCA model.
+png("man/figures/heatmap_plot.png", width = 1000, height = 1000, res = 150)
+plot_correlation_heatmap(
+  scca_model = scca_model, 
+  X = X, 
+  Y = Y, 
+  top_n = 25
+)
+dev.off()
 
 message("\nAnalysis workflow successfully completed!")
+message("Files generated in man/figures/:")
+message("- network_plot.png")
+message("- circle_plot.png")
+message("- heatmap_plot.png")

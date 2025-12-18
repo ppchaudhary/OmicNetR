@@ -1,0 +1,9 @@
+align_omics             Align Multi-Omic Datasets
+generate_dummy_omics    Generate Dummy Multi-Omics Data
+omic_scca               Perform Sparse Canonical Correlation Analysis
+                        (sCCA)
+omics_example           Example Multi-Omics Dataset
+plot_bipartite_network
+                        Plot Bi-partite sCCA Weight Network
+plot_pathway_circle     Canonical Loading Pathway Circle Plot
+scca_to_network         Convert sCCA Loadings to Network Edges
