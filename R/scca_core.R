@@ -89,8 +89,8 @@ scca_to_network <- function(scca_model, comp_select = 1, weight_threshold = 0.05
   
   edges$Weight_Product <- u_nonzero[edges$Gene] * v_nonzero[edges$Metabolite]
   
-  edges_filt <- edges %>%
-    dplyr::filter(abs(Weight_Product) >= weight_threshold)
+  edges_filt <- edges[abs(edges$Weight_Product) >= weight_threshold, , drop = FALSE]
+  
   
   edges_filt$Interaction_Type <- ifelse(edges_filt$Weight_Product > 0, "Positive", "Negative")
   

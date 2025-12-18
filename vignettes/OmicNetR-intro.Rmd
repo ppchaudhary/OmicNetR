@@ -1,0 +1,125 @@
+---
+title: "OmicNetR: Integrative Multi-Omics with Sparse CCA"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{OmicNetR: Integrative Multi-Omics with Sparse CCA}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 7
+)
+set.seed(123)
+```
+
+## Overview
+
+**OmicNetR** provides a minimal, reproducible workflow for integrating two omics layers
+(e.g., gene expression and metabolomics) using sparse canonical correlation analysis (sCCA).
+
+This vignette demonstrates:
+
+1. generating (or loading) two omics matrices,
+2. aligning samples,
+3. fitting sCCA,
+4. creating a bipartite network,
+5. plotting key visual summaries.
+
+## Load OmicNetR
+
+```{r}
+library(OmicNetR)
+```
+
+## 1. Generate example data
+
+For demonstration we use simulated multi-omics data. Replace this section with your own matrices
+in real analyses.
+
+```{r}
+omics_data <- generate_dummy_omics(
+  n_samples = 60,
+  n_genes = 800,
+  n_metabolites = 150,
+  n_linked = 20
+)
+
+X <- omics_data$X
+Y <- omics_data$Y
+```
+
+## 2. Align samples
+
+Alignment ensures that `X` and `Y` contain the same samples in the same order.
+
+```{r}
+aligned <- align_omics(X, Y)
+X_aligned <- aligned$X
+Y_aligned <- aligned$Y
+```
+
+## 3. Fit sparse CCA
+
+The `penalty_X` and `penalty_Y` parameters control sparsity (higher = sparser).
+
+```{r}
+scca_model <- omic_scca(
+  X = X_aligned,
+  Y = Y_aligned,
+  n_components = 2,
+  penalty_X = 0.70,
+  penalty_Y = 0.70
+)
+str(scca_model, max.level = 1)
+```
+
+## 4. Convert loadings to an interaction network
+
+Edges are formed by pairing selected genes and metabolites and filtering by the absolute product
+of weights (`weight_threshold`).
+
+```{r}
+net_data <- scca_to_network(
+  scca_model,
+  comp_select = 1,
+  weight_threshold = 0.01
+)
+
+# Keep the strongest edges for readability
+net_data <- net_data[order(abs(net_data$Weight_Product), decreasing = TRUE), ]
+net_data <- head(net_data, 50)
+head(net_data)
+```
+
+## 5. Visualize results
+
+### Bipartite network
+
+```{r}
+plot_bipartite_network(net_data)
+```
+
+### Feature importance circle plot
+
+```{r}
+p <- plot_pathway_circle(scca_model, top_features = 30, pathway_db = "KEGG")
+p
+```
+
+### Correlation heatmap
+
+This heatmap summarizes correlations between the top sCCA-selected features from each omic layer.
+
+```{r}
+plot_correlation_heatmap(scca_model = scca_model, X = X_aligned, Y = Y_aligned, top_n = 25)
+```
+
+## Notes for CRAN
+
+- This vignette uses simulated data and avoids writing files to the package directory.
+- Plots are created in-memory and rendered by knitr.
