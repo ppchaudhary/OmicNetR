@@ -6,11 +6,10 @@ Authors@R:
     person("Prem Prashant", "Chaudhary", 
            email = "chaudharyp2@nih.gov", 
            role = c("aut", "cre"))
-Description: Implements Sparse Canonical Correlation Analysis (sCCA) to identify 
-    shared variation between transcriptomics (RNA-seq) and metabolomics datasets. [cite: 2]
-    Provides specialized visualization tools, including bipartite weight networks 
-    and circular pathway plots, to facilitate biological interpretation of 
-    integrated multi-omics results. [cite: 3]
+Description: Description: Provides an end-to-end workflow for integrative analysis of
+    two omics layers using sparse canonical correlation analysis (sCCA),
+    including sample alignment, network edge construction, and visualization
+    of gene–metabolite relationships.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -19,12 +18,15 @@ Depends:
     R (>= 3.5)
 Imports:
     mixOmics,
-    dplyr,
     igraph,
     ggplot2,
     graphics,
     grDevices,
     stats
+Suggests:
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
 
 
 
