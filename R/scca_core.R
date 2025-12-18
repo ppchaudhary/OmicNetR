@@ -67,9 +67,6 @@ omic_scca <- function(X, Y, n_components = 2, penalty_X = 0.9, penalty_Y = 0.9) 
 #' @export
 scca_to_network <- function(scca_model, comp_select = 1, weight_threshold = 0.05) {
   
-  if (!requireNamespace("dplyr", quietly = TRUE)) {
-    stop("Package 'dplyr' is required.")
-  }
   
   u <- scca_model$loadings$X[, comp_select] 
   v <- scca_model$loadings$Y[, comp_select] 

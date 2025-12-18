@@ -9,3 +9,7 @@
 ^README\.html$
 ^doc$
 ^LICENSE\.md$
+^OmicNetR\.Rcheck$
+^\.\.Rcheck$
+^.*\.tar\.gz$
+^LICENSE\.md$
