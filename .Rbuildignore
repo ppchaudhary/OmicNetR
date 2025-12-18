@@ -6,3 +6,6 @@
 ^tools$
 ^doc$
 ^Meta$
+^README\.html$
+^doc$
+^LICENSE\.md$

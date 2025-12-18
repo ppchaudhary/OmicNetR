@@ -1,33 +1,31 @@
 Package: OmicNetR
 Type: Package
-Title: Network-Guided Integration of Multi-Omics Data via Sparse Canonical Correlation
+Title: Network-Based Integration of Multi-Omics Data Using Sparse CCA
 Version: 0.1.0
-Authors@R: 
-    person("Prem Prashant", "Chaudhary", 
-           email = "chaudharyp2@nih.gov", 
-           role = c("aut", "cre"))
-Description: Description: Provides an end-to-end workflow for integrative analysis of
+Authors@R:
+    person(given = "Prem Prashant",
+           family = "Chaudhary",
+           role = c("aut", "cre"),
+           email = "chaudharyp2@nih.gov")
+Author: Prem Prashant Chaudhary [aut, cre]
+Maintainer: Prem Prashant Chaudhary <chaudharyp2@nih.gov>
+Description: Provides an end-to-end workflow for integrative analysis of
     two omics layers using sparse canonical correlation analysis (sCCA),
-    including sample alignment, network edge construction, and visualization
-    of gene–metabolite relationships.
-License: GPL-3
+    including sample alignment, feature selection, network edge construction,
+    and visualization of gene–metabolite relationships.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.2
-Depends: 
-    R (>= 3.5)
 Imports:
-    mixOmics,
-    igraph,
-    ggplot2,
+    stats,
     graphics,
     grDevices,
-    stats
+    ggplot2,
+    igraph
 Suggests:
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0),
+    mixOmics
 VignetteBuilder: knitr
-
-
-
-
+RoxygenNote: 7.3.2
