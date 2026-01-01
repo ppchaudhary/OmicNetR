@@ -27,6 +27,13 @@ align_omics <- function(X, Y) {
 #' @param n_components Number of components.
 #' @param penalty_X Sparsity for X (0 to 1, where 1 is most sparse).
 #' @param penalty_Y Sparsity for Y (0 to 1, where 1 is most sparse).
+#' @return An object of class \code{"OmicNetR_sCCA"} (a named list) with:
+#' \itemize{
+#'   \item \code{canonical_correlations}: numeric vector of per-component correlations/variance explained from the fitted model.
+#'   \item \code{loadings}: list with matrices \code{X} and \code{Y} (feature weights) for each component.
+#'   \item \code{variates}: list with matrices \code{X} and \code{Y} (sample scores) for each component.
+#'   \item \code{penalties}: list with \code{penalty_X} and \code{penalty_Y} used to set sparsity.
+#' }
 #' @export
 omic_scca <- function(X, Y, n_components = 2, penalty_X = 0.9, penalty_Y = 0.9) {
   
@@ -64,6 +71,13 @@ omic_scca <- function(X, Y, n_components = 2, penalty_X = 0.9, penalty_Y = 0.9) 
 #' @param scca_model The result object from omic_scca().
 #' @param comp_select Which canonical component to use.
 #' @param weight_threshold Minimum absolute product of weights to include an edge.
+#' @return A \code{data.frame} of edges with one row per gene-metabolite pair passing the threshold, containing:
+#' \itemize{
+#'   \item \code{Gene}: character, feature name from X.
+#'   \item \code{Metabolite}: character, feature name from Y.
+#'   \item \code{Weight_Product}: numeric, product of the selected loadings (edge weight).
+#'   \item \code{Interaction_Type}: character, \code{"Positive"} or \code{"Negative"} based on the sign of \code{Weight_Product}.
+#' }
 #' @export
 scca_to_network <- function(scca_model, comp_select = 1, weight_threshold = 0.05) {
   

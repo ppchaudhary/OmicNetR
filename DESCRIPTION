@@ -1,7 +1,7 @@
 Package: OmicNetR
 Type: Package
 Title: Network-Based Integration of Multi-Omics Data Using Sparse CCA
-Version: 0.1.0
+Version: 0.1.1
 Authors@R:
     person(given = "Prem Prashant",
            family = "Chaudhary",
@@ -10,9 +10,13 @@ Authors@R:
 Author: Prem Prashant Chaudhary [aut, cre]
 Maintainer: Prem Prashant Chaudhary <chaudharyp2@nih.gov>
 Description: Provides an end-to-end workflow for integrative analysis of
-    two omics layers using sparse canonical correlation analysis (sCCA),
-    including sample alignment, feature selection, network edge construction,
-    and visualization of gene–metabolite relationships.
+	two omics layers using sparse canonical correlation analysis (sCCA),
+	including sample alignment, feature selection, network edge construction,
+	and visualization of gene-metabolite relationships. The underlying methods
+	are based on penalized matrix decomposition and sparse CCA
+	(Witten, Tibshirani and Hastie (2009) <doi:10.1093/biostatistics/kxp008>),
+	with design principles inspired by multivariate integrative frameworks
+	such as mixOmics (Rohart et al. (2017) <doi:10.1371/journal.pcbi.1005752>).
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

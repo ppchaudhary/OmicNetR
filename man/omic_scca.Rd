@@ -17,6 +17,15 @@ omic_scca(X, Y, n_components = 2, penalty_X = 0.9, penalty_Y = 0.9)
 
 \item{penalty_Y}{Sparsity for Y (0 to 1, where 1 is most sparse).}
 }
+\value{
+An object of class \code{"OmicNetR_sCCA"} (a named list) with:
+\itemize{
+  \item \code{canonical_correlations}: numeric vector of per-component correlations/variance explained from the fitted model.
+  \item \code{loadings}: list with matrices \code{X} and \code{Y} (feature weights) for each component.
+  \item \code{variates}: list with matrices \code{X} and \code{Y} (sample scores) for each component.
+  \item \code{penalties}: list with \code{penalty_X} and \code{penalty_Y} used to set sparsity.
+}
+}
 \description{
 Fits a sparse PLS model in canonical mode to identify shared variation.
 }

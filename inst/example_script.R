@@ -34,16 +34,15 @@ if(nrow(net_data_comp1) > 50) {
 # ----------------------------------------------------------------------
 # 4. Saving and Rendering Visuals to man/figures
 # ----------------------------------------------------------------------
-message("Step 4: Saving plots to man/figures...")
+out_dir <- file.path(tempdir(), "OmicNetR_example_outputs")
+if (!dir.exists(out_dir)) dir.create(out_dir, recursive = TRUE)
+message(paste0("Step 4: Saving plots to: ", out_dir))
 
 # Create the directory if it doesn't exist (root of your package)
-if (!dir.exists("man/figures")) {
-  dir.create("man/figures", recursive = TRUE)
-}
 
 # A. Bipartite Network Plot
 # We use png() because this function uses Base R/igraph plotting
-png("man/figures/network_plot.png", width = 1000, height = 1000, res = 150)
+png(file.path(out_dir, "network_plot.png"), width = 1000, height = 1000, res = 150)
 plot_bipartite_network(
   net_data_comp1,
   gene_color = "#1F77B4", 
@@ -59,12 +58,12 @@ pathway_circle_plot <- plot_pathway_circle(
   top_features = 30, 
   pathway_db = "KEGG"
 )
-ggplot2::ggsave("man/figures/circle_plot.png", plot = pathway_circle_plot, width = 7, height = 7, dpi = 300)
+ggplot2::ggsave(file.path(out_dir, "circle_plot.png"), plot = pathway_circle_plot, width = 7, height = 7, dpi = 300)
 
 # C. Global Correlation Heatmap
 # This uses the original matrices (X and Y) to calculate correlations 
 # for the features selected by the sCCA model.
-png("man/figures/heatmap_plot.png", width = 1000, height = 1000, res = 150)
+png(file.path(out_dir, "heatmap_plot.png"), width = 1000, height = 1000, res = 150)
 plot_correlation_heatmap(
   scca_model = scca_model, 
   X = X, 
@@ -74,7 +73,8 @@ plot_correlation_heatmap(
 dev.off()
 
 message("\nAnalysis workflow successfully completed!")
-message("Files generated in man/figures/:")
+message("\nFiles generated in:")
+message(out_dir)
 message("- network_plot.png")
 message("- circle_plot.png")
 message("- heatmap_plot.png")

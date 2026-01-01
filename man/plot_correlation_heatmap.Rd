@@ -15,6 +15,9 @@ plot_correlation_heatmap(scca_model, X, Y, top_n = 20)
 
 \item{top_n}{Number of top features from each omic to include.}
 }
+\value{
+(Invisible) A numeric matrix of correlations between the selected features in \code{X} and \code{Y}.
+}
 \description{
 Visualizes the correlation matrix with a gradient color scale.
 }

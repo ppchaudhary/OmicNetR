@@ -13,6 +13,15 @@ scca_to_network(scca_model, comp_select = 1, weight_threshold = 0.05)
 
 \item{weight_threshold}{Minimum absolute product of weights to include an edge.}
 }
+\value{
+A \code{data.frame} of edges with one row per gene-metabolite pair passing the threshold, containing:
+\itemize{
+  \item \code{Gene}: character, feature name from X.
+  \item \code{Metabolite}: character, feature name from Y.
+  \item \code{Weight_Product}: numeric, product of the selected loadings (edge weight).
+  \item \code{Interaction_Type}: character, \code{"Positive"} or \code{"Negative"} based on the sign of \code{Weight_Product}.
+}
+}
 \description{
 Generates an edge list for network plotting from sCCA loadings.
 }

@@ -120,6 +120,7 @@ plot_pathway_circle <- function(scca_model, top_features = 40, pathway_db = "KEG
 #' @param X Aligned RNA-seq matrix.
 #' @param Y Aligned Metabolomics matrix.
 #' @param top_n Number of top features from each omic to include.
+#' @return (Invisible) A numeric matrix of correlations between the selected features in \code{X} and \code{Y}.
 #' @importFrom graphics image axis layout par plot.new plot.window rect text rasterImage
 #' @importFrom grDevices colorRampPalette as.raster
 #' @importFrom stats cor
@@ -137,6 +138,9 @@ plot_correlation_heatmap <- function(scca_model, X, Y, top_n = 20) {
   
   # 3. Layout: Split screen for Heatmap (left) and Color Scale (right)
   graphics::layout(matrix(c(1, 2), nrow = 1), widths = c(4, 1.2))
+  on.exit(graphics::layout(1), add = TRUE)
+  oldpar <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(oldpar), add = TRUE)
   graphics::par(mar = c(8, 8, 4, 1))
   
   # 4. Draw Heatmap (zlim ensures white = 0 correlation)
@@ -159,7 +163,5 @@ plot_correlation_heatmap <- function(scca_model, X, Y, top_n = 20) {
   graphics::axis(4, at = c(-1, 0, 1), labels = c("-1", "0", "1"), las = 1, cex.axis = 0.8)
   graphics::text(1.3, 0, labels = "Correlation (r)", srt = 270, xpd = TRUE, font = 2)
   
-  # Reset layout
-  graphics::layout(1)
   return(invisible(cor_mat))
 }
