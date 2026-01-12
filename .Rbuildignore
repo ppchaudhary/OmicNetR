@@ -13,3 +13,4 @@
 ^\.\.Rcheck$
 ^.*\.tar\.gz$
 ^LICENSE\.md$
+^CRAN-SUBMISSION$

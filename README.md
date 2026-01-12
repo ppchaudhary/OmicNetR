@@ -27,6 +27,11 @@ end-to-end workflow for aligning multi-omics datasets, fitting an sCCA
 model, creating a gene–metabolite bipartite network, and generating
 summary visualizations.
 
+**Disclaimer**  
+OmicNetR is an independent R package for network-guided multi-omics
+integration and is not affiliated with any similarly named tools or web
+platforms such as OmicsNet.
+
 ## Installation
 
 ### Development version (GitHub)

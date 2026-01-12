@@ -1,4 +1,4 @@
-# OmicNetR 0.1.0
+# OmicNetR 0.1.1
 
 * Initial CRAN submission.
 * Implements Sparse Canonical Correlation Analysis (sCCA) for RNA-seq and Metabolomics integration.
