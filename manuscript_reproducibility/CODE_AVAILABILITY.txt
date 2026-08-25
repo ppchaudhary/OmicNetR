@@ -1,0 +1,3 @@
+OmicNetR is publicly available through CRAN and GitHub. The exact R scripts used to reproduce the simulation benchmark, bootstrap stability analysis, and manuscript Figures 2-4 are provided in the `manuscript_reproducibility` directory of the OmicNetR GitHub repository. Simulation datasets are generated programmatically using fixed random seeds. The computational environment and package versions used for the analyses are documented in `sessionInfo.txt`.
+
+Replace the repository placeholder in the manuscript with the final public GitHub URL and, preferably, the Zenodo DOI for the archived submission version.

@@ -1,0 +1,16 @@
+# R/RStudio
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+
+# macOS
+.DS_Store
+
+# Generated output folders
+OmicNetR_benchmark_results/
+OmicNetR_MC903_FINAL/
+
+# Uncomment these if the MC903 inputs are not approved for public release
+# data/RNA_seq_normalised.csv
+# data/Metabolomics_raw.csv
