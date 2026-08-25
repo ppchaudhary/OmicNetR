@@ -1,0 +1,2 @@
+"Component","Orientation_flipped","Positive_direction_label","Negative_direction_label","Interpretation"
+1,TRUE,"OA-associated","DIL-associated","Labels indicate association with the post-hoc oriented latent component; they do not imply differential enrichment or causal treatment effects."
